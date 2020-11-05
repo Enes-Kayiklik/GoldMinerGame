@@ -1,7 +1,7 @@
 package com.eneskayiklik;
 
 import com.eneskayiklik.ui.start.StartScreen;
-import com.eneskayiklik.ui.utils.Functions;
+import com.eneskayiklik.utils.Functions;
 
 import javax.swing.*;
 
