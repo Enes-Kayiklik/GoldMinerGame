@@ -1,7 +1,7 @@
-package com.eneskayiklik.ui.utils;
+package com.eneskayiklik.utils;
 
 public class Functions {
     public static void logException(Exception e) {
-        System.out.println(e.getMessage());
+        System.err.println(e.getMessage());
     }
 }

@@ -1,7 +1,7 @@
 package com.eneskayiklik.ui.settings;
 
-import com.eneskayiklik.ui.model.Settings;
-import com.eneskayiklik.ui.utils.Functions;
+import com.eneskayiklik.model.Settings;
+import com.eneskayiklik.utils.Functions;
 
 import javax.swing.*;
 

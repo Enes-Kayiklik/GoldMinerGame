@@ -1,7 +1,7 @@
 package com.eneskayiklik.ui.start;
 
+import com.eneskayiklik.model.Settings;
 import com.eneskayiklik.ui.game.GameScreen;
-import com.eneskayiklik.ui.model.Settings;
 import com.eneskayiklik.ui.settings.SettingsScreen;
 
 import javax.swing.*;
@@ -27,9 +27,10 @@ public class StartScreen extends JFrame {
                 showNewScreen(new SettingsScreen(settings))
         );
 
-        btnStartGame.addActionListener(e ->
-                showNewScreen(new GameScreen(settings))
-        );
+        btnStartGame.addActionListener(e -> {
+            this.dispose();
+            showNewScreen(new GameScreen(settings));
+        });
     }
 
     private void showNewScreen(JFrame panel) {

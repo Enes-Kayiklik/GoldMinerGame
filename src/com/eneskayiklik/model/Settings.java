@@ -1,4 +1,4 @@
-package com.eneskayiklik.ui.model;
+package com.eneskayiklik.model;
 
 public class Settings {
     private int xSize = 20;
