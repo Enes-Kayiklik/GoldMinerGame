@@ -11,11 +11,12 @@ public class GameScreen extends JFrame {
     }
 
     private void setupPanel(Settings settings) {
-        add(new GamePanel(settings));
+
         setTitle("Game Screen");
         setSize(600, 600);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        add(new GamePanel(settings));
         setLocationRelativeTo(null);
         pack();
     }
