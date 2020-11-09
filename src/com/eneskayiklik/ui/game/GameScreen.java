@@ -11,7 +11,6 @@ public class GameScreen extends JFrame {
     }
 
     private void setupPanel(Settings settings) {
-
         setTitle("Game Screen");
         setSize(600, 600);
         setResizable(false);
