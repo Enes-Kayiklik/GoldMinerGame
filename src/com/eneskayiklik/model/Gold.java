@@ -3,7 +3,7 @@ package com.eneskayiklik.model;
 public class Gold {
     private final int dimensionX;
     private final int dimensionY;
-    private final int amount;
+    private int amount;
     private boolean isVisible;
 
     public Gold(int dimensionX, int dimensionY, int amount, boolean isVisible) {
@@ -27,6 +27,10 @@ public class Gold {
 
     public boolean isVisible() {
         return isVisible;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public void setVisible(boolean visible) {

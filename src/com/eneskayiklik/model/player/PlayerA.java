@@ -4,15 +4,15 @@ import com.eneskayiklik.model.Gold;
 import com.eneskayiklik.model.Target;
 import com.eneskayiklik.utils.Functions;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PlayerA extends Player {
-    public PlayerA(char name, int goldAmount, int dimensionX, int dimensionY) {
-        super(name, goldAmount, dimensionX, dimensionY);
+    public PlayerA(char name, int goldAmount, int dimensionX, int dimensionY, int goldAmountPerRound, int selectTargetAmount) {
+        super(name, goldAmount, dimensionX, dimensionY, goldAmountPerRound, selectTargetAmount);
     }
 
     @Override
-    public void selectTargetA(ArrayList<Gold> golds) {
+    public void selectTargetA(HashSet<Gold> golds) {
         if (!golds.isEmpty() && this.getGoldAmount() > 0) {
             int x = this.getDimensionX();
             int y = this.getDimensionY();
@@ -27,7 +27,7 @@ public class PlayerA extends Player {
                     minTarget.setGold(currentGold);
                 }
             }
-            this.setGoldAmount(this.getGoldAmount() - 5);
+            this.setGoldAmount(this.getGoldAmount() - this.getSelectTargetAmount());
             this.setTarget(minTarget);
         } else this.setTarget(null);
     }

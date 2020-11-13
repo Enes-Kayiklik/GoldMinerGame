@@ -5,19 +5,15 @@ import com.eneskayiklik.model.Target;
 import com.eneskayiklik.utils.Functions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PlayerD extends Player {
-    public PlayerD(char name, int goldAmount, int dimensionX, int dimensionY) {
-        super(name, goldAmount, dimensionX, dimensionY);
+    public PlayerD(char name, int goldAmount, int dimensionX, int dimensionY, int goldAmountPerRound, int selectTargetAmount) {
+        super(name, goldAmount, dimensionX, dimensionY, goldAmountPerRound, selectTargetAmount);
     }
 
     @Override
-    public void selectTarget(ArrayList<Gold> golds, ArrayList<Player> players) {
-        super.selectTarget(golds, players);
-    }
-
-    @Override
-    public void selectTargetA(ArrayList<Gold> golds) {
+    public void selectTarget(HashSet<Gold> golds, ArrayList<Player> players) {
         if (!golds.isEmpty() && this.getGoldAmount() > 0) {
             int x = this.getDimensionX();
             int y = this.getDimensionY();
@@ -25,15 +21,29 @@ public class PlayerD extends Player {
             Target minTarget = new Target(x, y, null);
             for (Gold currentGold : golds) {
                 double distance = Functions.findDistance(x, currentGold.getDimensionX(), y, currentGold.getDimensionY());
-                if (min > distance && currentGold.isVisible()) {
+                if (min > distance && currentGold.isVisible() && isCloserThanAnyPlayer(players, currentGold, distance)) {
                     min = distance;
                     minTarget.setDimensionX(currentGold.getDimensionX());
                     minTarget.setDimensionY(currentGold.getDimensionY());
                     minTarget.setGold(currentGold);
                 }
             }
-            this.setGoldAmount(this.getGoldAmount() - 5);
+            this.setGoldAmount(this.getGoldAmount() - this.getSelectTargetAmount());
             this.setTarget(minTarget);
         } else this.setTarget(null);
+    }
+
+    private boolean isCloserThanAnyPlayer(ArrayList<Player> players, Gold currentGold, double distance) {
+        for (Player player : players) {
+            Target target = player.getTarget();
+            if (target != null) {
+                if (target.getDimensionX() == currentGold.getDimensionX() && target.getDimensionY() == currentGold.getDimensionY()) {
+                    if (distance < Functions.findDistance(target.getDimensionX(), currentGold.getDimensionX(), target.getDimensionY(), currentGold.getDimensionY())) {
+                        return true;
+                    }
+                } else return true;
+            }
+        }
+        return false;
     }
 }

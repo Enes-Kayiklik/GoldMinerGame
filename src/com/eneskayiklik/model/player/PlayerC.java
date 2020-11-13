@@ -4,15 +4,15 @@ import com.eneskayiklik.model.Gold;
 import com.eneskayiklik.model.Target;
 import com.eneskayiklik.utils.Functions;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PlayerC extends Player {
-    public PlayerC(char name, int goldAmount, int dimensionX, int dimensionY) {
-        super(name, goldAmount, dimensionX, dimensionY);
+    public PlayerC(char name, int goldAmount, int dimensionX, int dimensionY, int goldAmountPerRound, int selectTargetAmount) {
+        super(name, goldAmount, dimensionX, dimensionY, goldAmountPerRound, selectTargetAmount);
     }
 
     @Override
-    public void selectTargetC(ArrayList<Gold> golds, int unitSize) {
+    public void selectTargetC(HashSet<Gold> golds, int unitSize) {
         if (!golds.isEmpty() && this.getGoldAmount() > 0) {
             int x = this.getDimensionX();
             int y = this.getDimensionY();
@@ -28,12 +28,12 @@ public class PlayerC extends Player {
                     selectedTarget.setGold(currentGold);
                 }
             }
-            this.setGoldAmount(this.getGoldAmount() - 5);
+            this.setGoldAmount(this.getGoldAmount() - this.getSelectTargetAmount());
             this.setTarget(selectedTarget);
         } else this.setTarget(null);
     }
 
-    private void makeVisible(ArrayList<Gold> golds, int x, int y) {
+    private void makeVisible(HashSet<Gold> golds, int x, int y) {
         for (Gold currentGold : golds) {
             if (Functions.findDistance(x, currentGold.getDimensionX(), y, currentGold.getDimensionY()) <= 75) {
                 currentGold.setVisible(true);

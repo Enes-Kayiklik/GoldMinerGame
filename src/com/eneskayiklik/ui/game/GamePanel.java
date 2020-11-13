@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class GamePanel extends JPanel {
@@ -21,7 +22,8 @@ public class GamePanel extends JPanel {
     static int GAME_UNITS;
     static int HIDDEN_GOLD;
     Random random;
-    ArrayList<Gold> golds = new ArrayList<>();
+    Settings settings;
+    HashSet<Gold> golds = new HashSet<>();
     ArrayList<Player> players = new ArrayList<>();
     Graphics graphics;
 
@@ -34,11 +36,12 @@ public class GamePanel extends JPanel {
 
     private void setupOptions(Settings settings) {
         random = new Random();
-        setupPanelSettings(settings);
+        this.settings = settings;
+        setupPanelSettings();
         int goldSize = (GAME_UNITS * settings.getGoldRatio()) / 100;
-        HIDDEN_GOLD = (goldSize * 10) / 100;
+        HIDDEN_GOLD = (goldSize * settings.getHiddenGoldRatio()) / 100;
         setupGold(goldSize);
-        setupPlayers(settings.getGoldAmountPerPlayer());
+        setupPlayers();
     }
 
     private void playGame() {
@@ -53,13 +56,9 @@ public class GamePanel extends JPanel {
         if (isAnyVisibleGold() || isAllPlayersGoldZero()) {
             int result = JOptionPane.showOptionDialog(this, "Oyun Bitti Kanka", "Seç Kanka", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Tamam"}, null);
             switch (result) {
-                case 0 -> new ResultScreen(players);
+                case 0 -> new ResultScreen(players).setVisible(true);
                 case 1 -> System.out.println("Delete me");
             }
-            /*JOptionPane.showMessageDialog(this,
-                    "Hocam oyun bitti.",
-                    "Oyun bitti",
-                    JOptionPane.WARNING_MESSAGE);*/
         }
 
         return isAnyVisibleGold() || isAllPlayersGoldZero();
@@ -80,7 +79,9 @@ public class GamePanel extends JPanel {
 
     private void move() {
         for (Player player : players) {
-            movePlayers(player);
+            if (player.getTarget() != null && golds.contains(player.getTarget().getGold())) {
+                movePlayers(player);
+            }
         }
     }
 
@@ -90,14 +91,21 @@ public class GamePanel extends JPanel {
             int moveCount = Functions.calculateMovement(target.getDimensionX(), player.getDimensionX(), target.getDimensionY(), player.getDimensionY(), UNIT_SIZE);
             int targetX = target.getDimensionX();
             int targetY = target.getDimensionY();
-            if (moveCount <= 3) {
+            if (moveCount <= settings.getStepSizePerRound()) {
                 player.setDimensionX(targetX);
                 player.setDimensionY(targetY);
                 player.setGoldAmount(player.getGoldAmount() + (target.getGold().getAmount() - moveCount * 5));
+                formatText(player.getName(), target.getGold(), player.getGoldAmount());
                 golds.remove(target.getGold());
-                player.setTarget(null);
+                for (Player currentPlayer : players) {
+                    if (currentPlayer.getTarget() == player.getTarget()) {
+                        currentPlayer.setTarget(null);
+                    }
+                }
             } else {
-                for (int i = 0; i < 3; i++) {
+                int startX = player.getDimensionX();
+                int startY = player.getDimensionY();
+                for (int i = 0; i < settings.getStepSizePerRound(); i++) {
                     int playerX = player.getDimensionX();
                     int playerY = player.getDimensionY();
                     if (targetX - playerX == 0) { // When X dimensions are equal move in Y Dimension
@@ -119,41 +127,60 @@ public class GamePanel extends JPanel {
                             player.setDimensionX(playerX - UNIT_SIZE);
                         }
                     }
-
-                    player.setGoldAmount(player.getGoldAmount() - 5);
+                    player.setGoldAmount(player.getGoldAmount() - player.getGoldAmountPerRound());
                 }
+                int endX = player.getDimensionX();
+                int endY = player.getDimensionY();
+                formatText(startX, startY, endX, endY, player.getGoldAmount(), String.valueOf(player.getName()));
             }
         }
     }
 
+    private void formatText(int startX, int startY, int endX, int endY, int currentGold, String name) {
+        String format = String.format(Functions.moveText, startX, startY, endX, endY, currentGold);
+        Functions.writeFile(name, format);
+    }
+
+    private void formatText(char name, Gold gold, int point) {
+        String format = String.format(Functions.getGoldText, gold.getDimensionX(), gold.getDimensionY(), gold.getAmount(), point);
+        Functions.writeFile(String.valueOf(name), format);
+    }
+
     private void chooseTarget() {
-        if (players.get(0).getTarget() == null)
+        if (players.get(0).getTarget() == null || Functions.isGoldTaken(golds, players.get(0).getTarget()))
             players.get(0).selectTargetA(golds);
-        if (players.get(1).getTarget() == null)
+        if (players.get(1).getTarget() == null || Functions.isGoldTaken(golds, players.get(1).getTarget()))
             players.get(1).selectTargetB(golds, UNIT_SIZE);
-        if (players.get(2).getTarget() == null)
+        if (players.get(2).getTarget() == null || Functions.isGoldTaken(golds, players.get(2).getTarget()))
             players.get(2).selectTargetC(golds, UNIT_SIZE);
-        if (players.get(3).getTarget() == null)
-            players.get(3).selectTargetA(golds);
+        if (players.get(3).getTarget() == null || Functions.isGoldTaken(golds, players.get(3).getTarget()))
+            players.get(3).selectTarget(golds, players);
         repaint();
     }
 
-    private void setupPlayers(int goldAmountPerPlayer) {
-        players.add(new PlayerA('A', goldAmountPerPlayer, 0, 0));
-        players.add(new PlayerB('B', goldAmountPerPlayer, 0, SCREEN_WIDTH - UNIT_SIZE));
-        players.add(new PlayerC('C', goldAmountPerPlayer, SCREEN_WIDTH - UNIT_SIZE, 0));
-        players.add(new PlayerD('D', goldAmountPerPlayer, SCREEN_WIDTH - UNIT_SIZE, SCREEN_WIDTH - UNIT_SIZE));
+    private void setupPlayers() {
+        players.add(new PlayerA('A', settings.getGoldAmountPerPlayer(), 0, 0, settings.getPlayerARoundAmount(), settings.getPlayerASelectTargetAmount()));
+        players.add(new PlayerB('B', settings.getGoldAmountPerPlayer(), 0, SCREEN_WIDTH - UNIT_SIZE, settings.getPlayerBRoundAmount(), settings.getPlayerBSelectTargetAmount()));
+        players.add(new PlayerC('C', settings.getGoldAmountPerPlayer(), SCREEN_WIDTH - UNIT_SIZE, 0, settings.getPlayerCRoundAmount(), settings.getPlayerCSelectTargetAmount()));
+        players.add(new PlayerD('D', settings.getGoldAmountPerPlayer(), SCREEN_WIDTH - UNIT_SIZE, SCREEN_WIDTH - UNIT_SIZE, settings.getPlayerDRoundAmount(), settings.getPlayerDSelectTargetAmount()));
     }
 
     private void setupGold(int goldSize) {
-        for (int i = 0; i < goldSize; i++) {
+        int i = 0;
+        while (i < goldSize) {
             // setting up gold items. Amount must grater than 5 and smaller than 20
-            golds.add(new Gold(
-                    random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE,
-                    random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE,
-                    (random.nextInt(4) + 1) * 5,
-                    i >= HIDDEN_GOLD));
+            int x = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
+            int y = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+            if (Functions.isNotAny(golds, x, y)) {
+                golds.add(new Gold(
+                        x,
+                        y,
+                        (random.nextInt(4) + 1) * 5,
+                        i >= HIDDEN_GOLD));
+                i++;
+            }
         }
+        System.out.println("Gold size -> " + golds.size());
     }
 
     @Override
@@ -223,7 +250,7 @@ public class GamePanel extends JPanel {
         graphics.drawString((player.getName() + " " + player.getGoldAmount()), player.getDimensionX(), player.getDimensionY() + UNIT_SIZE / 2);
     }
 
-    private void setupPanelSettings(Settings settings) {
+    private void setupPanelSettings() {
         SCREEN_HEIGHT = UNIT_SIZE * settings.getXSize();
         SCREEN_WIDTH = UNIT_SIZE * settings.getYSize();
         GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / (UNIT_SIZE * UNIT_SIZE);

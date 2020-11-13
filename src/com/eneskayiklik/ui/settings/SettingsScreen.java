@@ -15,6 +15,14 @@ public class SettingsScreen extends JFrame {
     private JTextField tvGoldAmountPerPlayer;
     private JTextField tvStepSizePerRound;
     private JButton btnSave;
+    private JTextField tvARoundGold;
+    private JTextField tvASelectTargetAmount;
+    private JTextField tvBRoundGold;
+    private JTextField tvBSelectTargetAmount;
+    private JTextField tvCRoundGold;
+    private JTextField tvCSelectTargetAmount;
+    private JTextField tvDRoundGold;
+    private JTextField tvDSelectTargetAmount;
 
     public SettingsScreen(Settings settings) {
         this.settings = settings;
@@ -23,9 +31,10 @@ public class SettingsScreen extends JFrame {
     }
 
     private void setupButtonsOnClick() {
-        btnSave.addActionListener(e ->
-                saveSettings()
-        );
+        btnSave.addActionListener(e -> {
+            saveSettings();
+            this.dispose();
+        });
     }
 
     private void saveSettings() {
@@ -49,6 +58,14 @@ public class SettingsScreen extends JFrame {
             settings.setHiddenGoldRatio(hiddenGold);
             settings.setGoldAmountPerPlayer(goldAmount);
             settings.setStepSizePerRound(stepSize);
+            settings.setPlayerARoundAmount(Integer.parseInt(tvARoundGold.getText()));
+            settings.setPlayerBRoundAmount(Integer.parseInt(tvBRoundGold.getText()));
+            settings.setPlayerCRoundAmount(Integer.parseInt(tvCRoundGold.getText()));
+            settings.setPlayerDRoundAmount(Integer.parseInt(tvDRoundGold.getText()));
+            settings.setPlayerASelectTargetAmount(Integer.parseInt(tvASelectTargetAmount.getText()));
+            settings.setPlayerBSelectTargetAmount(Integer.parseInt(tvBSelectTargetAmount.getText()));
+            settings.setPlayerCSelectTargetAmount(Integer.parseInt(tvCSelectTargetAmount.getText()));
+            settings.setPlayerDSelectTargetAmount(Integer.parseInt(tvDSelectTargetAmount.getText()));
         } catch (Exception e) {
             Functions.logException(e);
         }
@@ -56,7 +73,7 @@ public class SettingsScreen extends JFrame {
 
     private void setupPanel() {
         add(panelSettings);
-        setSize(400, 400);
+        setSize(600, 600);
         setTitle("Settings Screen");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);

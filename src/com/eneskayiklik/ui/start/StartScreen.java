@@ -3,8 +3,12 @@ package com.eneskayiklik.ui.start;
 import com.eneskayiklik.model.Settings;
 import com.eneskayiklik.ui.game.GameScreen;
 import com.eneskayiklik.ui.settings.SettingsScreen;
+import com.eneskayiklik.utils.Functions;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class StartScreen extends JFrame {
     private JButton btnSettings;
@@ -28,6 +32,7 @@ public class StartScreen extends JFrame {
         );
 
         btnStartGame.addActionListener(e -> {
+            createTxt();
             this.dispose();
             showNewScreen(new GameScreen(settings));
         });
@@ -44,5 +49,24 @@ public class StartScreen extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+    }
+
+    private void createTxt() {
+        try {
+            if (!new File("A.txt").createNewFile()) {
+                new FileWriter("A.txt").write("");
+            }
+            if (!new File("B.txt").createNewFile()) {
+                new FileWriter("B.txt").write("");
+            }
+            if (!new File("C.txt").createNewFile()) {
+                new FileWriter("C.txt").write("");
+            }
+            if (!new File("D.txt").createNewFile()) {
+                new FileWriter("D.txt").write("");
+            }
+        } catch (IOException e) {
+            Functions.logException(e);
+        }
     }
 }

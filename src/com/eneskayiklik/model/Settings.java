@@ -7,6 +7,78 @@ public class Settings {
     private int hiddenGoldRatio = 10;
     private int goldAmountPerPlayer = 200;
     private int stepSizePerRound = 3;
+    private int playerASelectTargetAmount = 5;
+    private int playerBSelectTargetAmount = 10;
+    private int playerCSelectTargetAmount = 15;
+    private int playerDSelectTargetAmount = 20;
+    private int playerARoundAmount = 3;
+    private int playerBRoundAmount = 3;
+    private int playerCRoundAmount = 3;
+    private int playerDRoundAmount = 3;
+
+    public int getPlayerASelectTargetAmount() {
+        return playerASelectTargetAmount;
+    }
+
+    public void setPlayerASelectTargetAmount(int playerASelectTargetAmount) {
+        this.playerASelectTargetAmount = playerASelectTargetAmount;
+    }
+
+    public int getPlayerBSelectTargetAmount() {
+        return playerBSelectTargetAmount;
+    }
+
+    public void setPlayerBSelectTargetAmount(int playerBSelectTargetAmount) {
+        this.playerBSelectTargetAmount = playerBSelectTargetAmount;
+    }
+
+    public int getPlayerCSelectTargetAmount() {
+        return playerCSelectTargetAmount;
+    }
+
+    public void setPlayerCSelectTargetAmount(int playerCSelectTargetAmount) {
+        this.playerCSelectTargetAmount = playerCSelectTargetAmount;
+    }
+
+    public int getPlayerDSelectTargetAmount() {
+        return playerDSelectTargetAmount;
+    }
+
+    public void setPlayerDSelectTargetAmount(int playerDSelectTargetAmount) {
+        this.playerDSelectTargetAmount = playerDSelectTargetAmount;
+    }
+
+    public int getPlayerARoundAmount() {
+        return playerARoundAmount;
+    }
+
+    public void setPlayerARoundAmount(int playerARoundAmount) {
+        this.playerARoundAmount = playerARoundAmount;
+    }
+
+    public int getPlayerBRoundAmount() {
+        return playerBRoundAmount;
+    }
+
+    public void setPlayerBRoundAmount(int playerBRoundAmount) {
+        this.playerBRoundAmount = playerBRoundAmount;
+    }
+
+    public int getPlayerCRoundAmount() {
+        return playerCRoundAmount;
+    }
+
+    public void setPlayerCRoundAmount(int playerCRoundAmount) {
+        this.playerCRoundAmount = playerCRoundAmount;
+    }
+
+    public int getPlayerDRoundAmount() {
+        return playerDRoundAmount;
+    }
+
+    public void setPlayerDRoundAmount(int playerDRoundAmount) {
+        this.playerDRoundAmount = playerDRoundAmount;
+    }
 
     public int getXSize() {
         return xSize;

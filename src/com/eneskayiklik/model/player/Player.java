@@ -4,19 +4,32 @@ import com.eneskayiklik.model.Gold;
 import com.eneskayiklik.model.Target;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Player {
     private final char name;
     private int goldAmount;
     private int dimensionX;
     private int dimensionY;
+    private final int goldAmountPerRound;
+    private final int selectTargetAmount;
     private Target target;
 
-    public Player(char name, int goldAmount, int dimensionX, int dimensionY) {
+    public Player(char name, int goldAmount, int dimensionX, int dimensionY, int goldAmountPerRound, int selectTargetAmount) {
         this.name = name;
         this.goldAmount = goldAmount;
         this.dimensionX = dimensionX;
         this.dimensionY = dimensionY;
+        this.goldAmountPerRound = goldAmountPerRound;
+        this.selectTargetAmount = selectTargetAmount;
+    }
+
+    public int getGoldAmountPerRound() {
+        return goldAmountPerRound;
+    }
+
+    public int getSelectTargetAmount() {
+        return selectTargetAmount;
     }
 
     public int getGoldAmount() {
@@ -56,19 +69,19 @@ public class Player {
     }
 
     // PlayerA's C's select target
-    public void selectTargetA(ArrayList<Gold> golds) {
+    public void selectTargetA(HashSet<Gold> golds) {
     }
 
     // PlayerB's select target
-    public void selectTargetB(ArrayList<Gold> golds, int unitSize) {
+    public void selectTargetB(HashSet<Gold> golds, int unitSize) {
     }
 
     // PlayerC's select target
-    public void selectTargetC(ArrayList<Gold> golds, int unitSize) {
+    public void selectTargetC(HashSet<Gold> golds, int unitSize) {
     }
 
     // PlayerD's select target
-    public void selectTarget(ArrayList<Gold> golds, ArrayList<Player> players) {
+    public void selectTarget(HashSet<Gold> golds, ArrayList<Player> players) {
     }
 
     @Override
