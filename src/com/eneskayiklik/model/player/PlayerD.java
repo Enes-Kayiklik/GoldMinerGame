@@ -30,6 +30,7 @@ public class PlayerD extends Player {
             }
             this.setGoldAmount(this.getGoldAmount() - this.getSelectTargetAmount());
             this.setTarget(minTarget);
+            this.setSpentGoldAmount(this.getSpentGoldAmount() + this.getSelectTargetAmount());
         } else this.setTarget(null);
     }
 

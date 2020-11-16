@@ -14,6 +14,9 @@ public class Player {
     private final int goldAmountPerRound;
     private final int selectTargetAmount;
     private Target target;
+    private int totalStep;
+    private int spentGoldAmount;
+    private int collectedGoldAmount;
 
     public Player(char name, int goldAmount, int dimensionX, int dimensionY, int goldAmountPerRound, int selectTargetAmount) {
         this.name = name;
@@ -22,6 +25,33 @@ public class Player {
         this.dimensionY = dimensionY;
         this.goldAmountPerRound = goldAmountPerRound;
         this.selectTargetAmount = selectTargetAmount;
+        this.totalStep = 0;
+        this.spentGoldAmount = 0;
+        this.collectedGoldAmount = 0;
+    }
+
+    public int getTotalStep() {
+        return totalStep;
+    }
+
+    public void setTotalStep(int totalStep) {
+        this.totalStep = totalStep;
+    }
+
+    public int getSpentGoldAmount() {
+        return spentGoldAmount;
+    }
+
+    public void setSpentGoldAmount(int spentGoldAmount) {
+        this.spentGoldAmount = spentGoldAmount;
+    }
+
+    public int getCollectedGoldAmount() {
+        return collectedGoldAmount;
+    }
+
+    public void setCollectedGoldAmount(int collectedGoldAmount) {
+        this.collectedGoldAmount = collectedGoldAmount;
     }
 
     public int getGoldAmountPerRound() {

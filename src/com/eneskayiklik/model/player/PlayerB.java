@@ -13,14 +13,14 @@ public class PlayerB extends Player {
 
     @Override
     public void selectTargetB(HashSet<Gold> golds, int unitSize) {
-        if (!golds.isEmpty()) {
+        if (!golds.isEmpty() && this.getGoldAmount() > 0) {
             int x = this.getDimensionX();
             int y = this.getDimensionY();
             int min = Integer.MAX_VALUE;
             Target selectedTarget = new Target(x, y, null);
             for (Gold currentGold : golds) {
                 int amount = Functions.calculateAmount(x, currentGold.getDimensionX(), y, currentGold.getDimensionY(), unitSize) - currentGold.getAmount();
-                if (currentGold.isVisible() && min > amount) {
+                if (min > amount && currentGold.isVisible()) {
                     min = amount;
                     selectedTarget.setDimensionX(currentGold.getDimensionX());
                     selectedTarget.setDimensionY(currentGold.getDimensionY());
@@ -29,6 +29,7 @@ public class PlayerB extends Player {
             }
             this.setGoldAmount(this.getGoldAmount() - this.getSelectTargetAmount());
             this.setTarget(selectedTarget);
+            this.setSpentGoldAmount(this.getSpentGoldAmount() + this.getSelectTargetAmount());
         } else this.setTarget(null);
     }
 }

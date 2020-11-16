@@ -11,10 +11,10 @@ public class Settings {
     private int playerBSelectTargetAmount = 10;
     private int playerCSelectTargetAmount = 15;
     private int playerDSelectTargetAmount = 20;
-    private int playerARoundAmount = 3;
-    private int playerBRoundAmount = 3;
-    private int playerCRoundAmount = 3;
-    private int playerDRoundAmount = 3;
+    private int playerARoundAmount = 5;
+    private int playerBRoundAmount = 5;
+    private int playerCRoundAmount = 5;
+    private int playerDRoundAmount = 5;
 
     public int getPlayerASelectTargetAmount() {
         return playerASelectTargetAmount;
@@ -137,6 +137,14 @@ public class Settings {
                 ", hiddenGoldRatio=" + hiddenGoldRatio +
                 ", goldAmountPerPlayer=" + goldAmountPerPlayer +
                 ", stepSizePerRound=" + stepSizePerRound +
+                ", playerASelectTargetAmount=" + playerASelectTargetAmount +
+                ", playerBSelectTargetAmount=" + playerBSelectTargetAmount +
+                ", playerCSelectTargetAmount=" + playerCSelectTargetAmount +
+                ", playerDSelectTargetAmount=" + playerDSelectTargetAmount +
+                ", playerARoundAmount=" + playerARoundAmount +
+                ", playerBRoundAmount=" + playerBRoundAmount +
+                ", playerCRoundAmount=" + playerCRoundAmount +
+                ", playerDRoundAmount=" + playerDRoundAmount +
                 '}';
     }
 }

@@ -54,10 +54,9 @@ public class GamePanel extends JPanel {
 
     private boolean checkGameEnded() {
         if (isAnyVisibleGold() || isAllPlayersGoldZero()) {
-            int result = JOptionPane.showOptionDialog(this, "Oyun Bitti Kanka", "Seç Kanka", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Tamam"}, null);
-            switch (result) {
-                case 0 -> new ResultScreen(players).setVisible(true);
-                case 1 -> System.out.println("Delete me");
+            int result = JOptionPane.showOptionDialog(this, "Oyun Bitti", "Oyun Bitti", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{"Tamam"}, null);
+            if (result == 0) {
+                new ResultScreen(players).setVisible(true);
             }
         }
 
@@ -94,8 +93,11 @@ public class GamePanel extends JPanel {
             if (moveCount <= settings.getStepSizePerRound()) {
                 player.setDimensionX(targetX);
                 player.setDimensionY(targetY);
-                player.setGoldAmount(player.getGoldAmount() + (target.getGold().getAmount() - moveCount * 5));
+                player.setGoldAmount(player.getGoldAmount() + target.getGold().getAmount() - moveCount * player.getGoldAmountPerRound());
                 formatText(player.getName(), target.getGold(), player.getGoldAmount());
+                player.setCollectedGoldAmount(player.getCollectedGoldAmount() + target.getGold().getAmount());
+                player.setSpentGoldAmount(player.getSpentGoldAmount() + moveCount * player.getGoldAmountPerRound());
+                player.setTotalStep(player.getTotalStep() + moveCount);
                 golds.remove(target.getGold());
                 for (Player currentPlayer : players) {
                     if (currentPlayer.getTarget() == player.getTarget()) {
@@ -129,6 +131,8 @@ public class GamePanel extends JPanel {
                     }
                     player.setGoldAmount(player.getGoldAmount() - player.getGoldAmountPerRound());
                 }
+                player.setTotalStep(player.getTotalStep() + settings.getStepSizePerRound());
+                player.setSpentGoldAmount(player.getSpentGoldAmount() + settings.getStepSizePerRound() * player.getGoldAmountPerRound());
                 int endX = player.getDimensionX();
                 int endY = player.getDimensionY();
                 formatText(startX, startY, endX, endY, player.getGoldAmount(), String.valueOf(player.getName()));
@@ -180,7 +184,6 @@ public class GamePanel extends JPanel {
                 i++;
             }
         }
-        System.out.println("Gold size -> " + golds.size());
     }
 
     @Override

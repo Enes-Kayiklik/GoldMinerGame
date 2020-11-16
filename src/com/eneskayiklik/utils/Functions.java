@@ -17,13 +17,13 @@ public class Functions {
         return Math.sqrt(Math.pow(x1 - x2, 2.0) + Math.pow(y1 - y2, 2.0));
     }
 
-    public static final String moveText = "%d-%d konumundan %d-%d konumuna hareket etti. Şu anki puanı -> %d\n";
+    public static final String moveText = "%d-%d konumundan %d-%d konumuna hareket etti. Şu anki altın miktarı -> %d\n";
 
     public static int calculateMovement(int x1, int x2, int y1, int y2, int unitSize) {
         return (((Math.abs(x1 - x2) / unitSize) + (Math.abs(y1 - y2) / unitSize)));
     }
 
-    public static final String getGoldText = "%d-%d konumundaki %d değerindeki altını ele geçirdi. Şu anki puanı -> %d\n";
+    public static final String getGoldText = "%d-%d konumundaki %d değerindeki altını ele geçirdi. Şu anki altın miktarı -> %d\n";
 
     public static int calculateAmount(int x1, int x2, int y1, int y2, int unitSize) {
         return calculateMovement(x1, x2, y1, y2, unitSize) * 5;

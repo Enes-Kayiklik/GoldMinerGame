@@ -20,7 +20,7 @@ public class PlayerC extends Player {
             int min = Integer.MAX_VALUE;
             Target selectedTarget = new Target(x, y, null);
             for (Gold currentGold : golds) {
-                int amount = Functions.calculateAmount(x, currentGold.getDimensionX(), y, currentGold.getDimensionY(), unitSize);
+                int amount = Functions.calculateAmount(x, currentGold.getDimensionX(), y, currentGold.getDimensionY(), unitSize) - currentGold.getAmount();
                 if (min > amount && currentGold.isVisible()) {
                     min = amount;
                     selectedTarget.setDimensionX(currentGold.getDimensionX());
@@ -30,6 +30,7 @@ public class PlayerC extends Player {
             }
             this.setGoldAmount(this.getGoldAmount() - this.getSelectTargetAmount());
             this.setTarget(selectedTarget);
+            this.setSpentGoldAmount(this.getSpentGoldAmount() + this.getSelectTargetAmount());
         } else this.setTarget(null);
     }
 
